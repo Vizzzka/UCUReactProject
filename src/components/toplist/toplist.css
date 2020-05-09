@@ -1,0 +1,21 @@
+.top-list-container {
+    flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.top-list-container > div {
+    margin: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.top-list-container > div p {
+    text-align: center;
+    padding: 5px 5px;
+}
+
+.top-list-container img:hover{
+    opacity: 0.3;
+
+}
