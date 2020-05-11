@@ -4,20 +4,18 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import MainPage from './components/main/main';
 import About from './components/about/about';
 import Contacts from './components/contacts/contacts';
-import Tests_list from './components/tests_list/tests_list';
+import TestsQuestions from './components/tests-questions/tests-questions';
 
-/*
-            <Route exact path='/about' component = {About}/>
-            <Route exact path='/contacts' component = {Contacts}/>
-            <Route exact path='/tests' component = {Tests_list}/>
- */
 
 function App() {
   return (
     <BrowserRouter>
         <Switch>
             <Route exact path='/' component = {MainPage}/>
+            <Route exact path='/about' component = {About}/>
+            <Route exact path='/contacts' component = {Contacts}/>
 
+            <Route path='/test/:id/' component={TestsQuestions}/>
         </Switch>
     </BrowserRouter>
   );

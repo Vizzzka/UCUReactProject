@@ -11,12 +11,12 @@ const Items = {
     },
     ItemsList: [
         {
-            href: '/about',
-            text: 'About'
+            href: '',
+            text: 'Home'
         },
         {
-            href: '/tests',
-            text: 'Tests'
+            href: '/about',
+            text: 'About'
         },
         {
             href: '/contacts',

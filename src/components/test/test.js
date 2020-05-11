@@ -6,8 +6,10 @@ const Test = ({ test, upScore, downScore}) => (
         <h3>{test.name}</h3>
         <div>{test.description}</div>
         <div>
-            <button id='like-button' onClick={() => upScore(test.id)}>Like</button>
-            <button id='dislike-button' onClick={() => downScore(test.id)}>Dislike</button>
+            <button id='like-button' onClick={() => upScore(test.id)}>Like {test.score}</button>
+            <form action={test.href}>
+                <button type="submit">Go</button>
+            </form>
         </div>
     </div>
 )
