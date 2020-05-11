@@ -63,7 +63,6 @@ export default class MainPage extends React.Component {
                 score: test.score + 1
             } : test)),
         });
-        // console.log(this.state.tests[0].score)
     }
 
     downScore(testId) {
@@ -73,7 +72,6 @@ export default class MainPage extends React.Component {
                 score: test.score - 1
             } : test)),
         });
-        // console.log(this.state.tests[0].score)
     }
 
     render() {

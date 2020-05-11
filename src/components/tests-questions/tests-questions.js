@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../navbar/navbar";
 import Footer from "../footer/footer";
+import Question from "../question/question";
 import './tests-questions.css';
 
 export default class TestsQuestions extends React.Component {
@@ -32,24 +33,24 @@ export default class TestsQuestions extends React.Component {
         }
         this.next_question = this.next_question.bind(this);
         this.get_test = this.get_test.bind(this);
+        this.get_num_of_questions = this.get_num_of_questions.bind(this);
     }
 
-    next_question(id) {
-        console.log(this.state.active_question)
-        if (this.state.active_question != this.get_test(this.state.active_test_id).questions.length - 1) {
+    next_question() {
+        if (this.state.active_question != this.get_num_of_questions() - 1) {
             var someProperty = {...this.state}
             someProperty.active_question += 1;
             this.setState(someProperty);
         }
     }
 
-    get_test(id) {
-        for (var t of this.state.tests) {
-            if (t.id == id) {
-                console.log(t)
+    get_num_of_questions() {
+        return this.get_test(this.state.active_test_id).questions.length;
+    }
+    get_test() {
+        for (var t of this.state.tests)
+            if (t.id == this.state.active_test_id)
                 return t;
-            }
-        }
     }
 
     render() {
@@ -58,25 +59,9 @@ export default class TestsQuestions extends React.Component {
             <main className='main-page'>
                 <NavBar/>
                 <div className='container'>
-                    <div className='process'>{this.state.active_question + 1} of
-                        {this.get_test(this.state.active_test_id).questions.length}</div>
-                    <h3 className='description-question'>
-                        {this.get_test(this.state.active_test_id).description}
-                    </h3>
-                    <div className='question-text'>
-                        {this.get_test(this.state.active_test_id).questions[this.state.active_question]}
-                    </div>
-                    <form className='answers'> {
-                        this.get_test(this.state.active_test_id).answers.map((answer) => (
-                            <div>
-                                <label htmlFor={answer}>{answer}
-                                <input type="radio" name="question" value={answer}/>
-                                </label>
-                            </div>
-                        ))
-                    }
-                    </form>
-                    <button onClick={this.next_question}> Next question </button>
+                    <Question active_question={this.state.active_question}
+                              number_of_questions={this.get_num_of_questions()}
+                              test={this.get_test()} next_question={this.next_question}/>
                 </div>
                 <Footer/>
             </main>
