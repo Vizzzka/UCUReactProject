@@ -7,7 +7,9 @@ import Footer from "../footer/footer";
 import Jung from "./Jung.jpg";
 import Freud from "./Freud.jpg";
 import Luscher from "./Luscher.jpg";
+import FeedbackForm from "../feedback_form/feedback_form";
 import Bubbles from '../bubbles/bubbles';
+import FeedbackList from '../feedback_list/feedback_list';
 import SearchPlugin from "../search_plugin/search_plugin";
 
 export default class MainPage extends React.Component {
@@ -40,11 +42,13 @@ export default class MainPage extends React.Component {
                     description: 'The Luscher Color Test, despite the remarkable ease and speed with which it can be administered, is a "deep" psychological test, developed for the use of psychiatrists, psychologists, physicians and those who are professionally involved with the conscious and unconscious characteristics and motivations of others',
                     score: 3
                 }
-            ]
+            ],
+            feedbacks: ['random text1', 'random tex2']
         }
         this.upScore = this.upScore.bind(this);
         this.downScore = this.downScore.bind(this);
         this.filterList = this.filterList.bind(this);
+        this.addFeedback = this.addFeedback.bind(this);
     }
 
     filterList(text){
@@ -74,6 +78,14 @@ export default class MainPage extends React.Component {
         });
     }
 
+    addFeedback(text) {
+        var feedbacks = this.state.feedbacks;
+        feedbacks.push(text);
+        this.setState({
+            feedbacks: feedbacks
+        });
+    }
+
     render() {
         return (
             <main className='main-page'>
@@ -84,6 +96,8 @@ export default class MainPage extends React.Component {
                     <TopList tests={this.state.tests}/>
                     <TestList tests={this.state.tests}
                               upScore={this.upScore} downScore={this.downScore}/>
+                    <FeedbackForm onAdd={(e) => this.addFeedback(e)}/>
+                    <FeedbackList feedbacks={this.state.feedbacks}/>
                 </div>
                 <Footer/>
             </main>
