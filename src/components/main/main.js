@@ -17,38 +17,31 @@ export default class MainPage extends React.Component {
         super(props);
         this.state = {
             header: 'Personality tests list',
-            tests: [
-                {
-                    id: 1,
-                    name: 'Jung test',
-                    href: 'test/1',
-                    image: Jung,
-                    description: 'The Jung personality test measures your preferences for dealing with and relating to people, processing information, making decisions and organizing your life. Its results give you a good overview of your personality and behavior. You can then see how your Jung types match up with a potential employer\'s requirements.',
-                    score: 5
-                },
-                {
-                    id: 2,
-                    name: 'Freud test',
-                    href: 'test/2',
-                    image: Freud,
-                    description: 'The Freudian Personality Style Test is intended for educational and recreational purposes only. ... According to Freud, our libido (sexual energy) goes through several stages of development: oral, anal, phallic, latency and genital stages. Each of the stages is important for proper individual psychosexual development.',
-                    score: 69
-                },
-                {
-                    id: 3,
-                    name: 'Luscher test',
-                    href: 'test/3',
-                    image: Luscher,
-                    description: 'The Luscher Color Test, despite the remarkable ease and speed with which it can be administered, is a "deep" psychological test, developed for the use of psychiatrists, psychologists, physicians and those who are professionally involved with the conscious and unconscious characteristics and motivations of others',
-                    score: 3
-                }
-            ],
-            feedbacks: ['random text1', 'random tex2']
+            tests: [],
+            feedbacks: []
         }
         this.upScore = this.upScore.bind(this);
-        this.downScore = this.downScore.bind(this);
         this.filterList = this.filterList.bind(this);
         this.addFeedback = this.addFeedback.bind(this);
+    }
+
+    componentDidMount() {
+        fetch('/tests').then(resp => {
+            return resp.json();
+        }).then(body => {
+
+            this.setState({
+                tests: body
+            })
+        });
+
+        fetch('/feedbacks').then(resp => {
+            return resp.json();
+        }).then(body => {
+            this.setState({
+                feedbacks: body
+            })
+        });
     }
 
     filterList(text){
@@ -61,29 +54,47 @@ export default class MainPage extends React.Component {
     }
 
     upScore(testId) {
-        this.setState({
-            tests: this.state.tests.map((test) => (test.id === testId ? {
-                id: test.id, name: test.name, image: test.image, description: test.description,
-                score: test.score + 1
-            } : test)),
-        });
-    }
+        var newTests = this.state.tests.map((test) => (test.id === testId ? {
+            id: test.id, name: test.name, image: test.image, description: test.description,
+            score: test.score + 1
+        } : test));
+        var newTest = newTests.find(test => test.id === testId);
 
-    downScore(testId) {
-        this.setState({
-            tests: this.state.tests.map((test) => (test.id === testId ? {
-                id: test.id, name: test.name, image: test.image, description: test.description,
-                score: test.score - 1
-            } : test)),
-        });
+        fetch(`/tests/${testId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newTest),
+        }).then((e) => {
+            return e.json()
+            }).then(SavedTest => {
+                this.setState((state) => ({
+                    tests: state.tests.map((test) => (SavedTest.id === test.id ? newTest : test) )
+                }))
+        })
     }
 
     addFeedback(text) {
         var feedbacks = this.state.feedbacks;
         feedbacks.push(text);
-        this.setState({
-            feedbacks: feedbacks
-        });
+        var newFeedbacks = feedbacks;
+        console.log(newFeedbacks)
+        fetch('/feedbacks', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newFeedbacks),
+        }).then((e) => {
+            return e.json()
+        }).then(SavedFeedbacks => {
+            //console.log(SavedFeedbacks)
+            this.setState({
+                feedbacks: newFeedbacks
+            })
+        })
+
     }
 
     render() {
